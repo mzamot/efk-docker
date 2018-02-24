@@ -1,0 +1,33 @@
+version: "2.1"
+
+services:
+  graphite:
+    image: graphiteapp/graphite-statsd
+    ports:
+      - "8090:80"
+      - "2003-2004:2003-2004"
+      - "2023-2024:2023-2024"
+      - "8125:8125/udp"
+      - "8126:8126"
+    volumes:
+      - data:/opt/graphite/storage
+
+  grafana:
+    build: ./grafana
+    ports:
+      - "3090:3000"
+    volumes:
+      - grafana:/var/lib/grafana
+    depends_on:
+      - graphite
+    environment:
+      GRAFANA_PLUGIN_LIST: "grafana-piechart-panel"
+      FORCE_HOSTNAME: auto
+      GRAFANA_USER: admin
+      GRAFANA_PASS: admin
+
+volumes:
+  data:
+    driver: local
+  grafana:
+    driver: local
