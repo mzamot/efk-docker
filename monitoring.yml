@@ -19,14 +19,8 @@ services:
       - 6379:6379 
     restart: always
 
-  sensu-base:
-    build: ./sensu/base
-    image: sensu-base:latest
-
   sensu-server:
     build: ./sensu/server 
-    depends_on:
-      - sensu-base
     links:
       - rabbitmq
       - redis
@@ -37,8 +31,6 @@ services:
 
   sensu-api:
     build: ./sensu/api
-    depends_on:
-      - sensu-base
     links:
       - rabbitmq
       - redis

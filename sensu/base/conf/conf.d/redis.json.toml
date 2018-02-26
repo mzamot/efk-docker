@@ -1,3 +1,0 @@
-[template]
-src = "redis.json.tmpl"
-dest = "/etc/sensu/conf.d/redis.json"

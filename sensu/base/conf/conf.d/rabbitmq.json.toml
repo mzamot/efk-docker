@@ -1,3 +1,0 @@
-[template]
-src = "rabbitmq.json.tmpl"
-dest = "/etc/sensu/conf.d/rabbitmq.json"
