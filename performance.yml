@@ -4,20 +4,22 @@ services:
   graphite:
     image: graphiteapp/graphite-statsd
     ports:
-      - "8090:80"
       - "2003-2004:2003-2004"
       - "2023-2024:2023-2024"
       - "8125:8125/udp"
       - "8126:8126"
     volumes:
-      - data:/opt/graphite/storage
+      - graphite-data:/opt/graphite/storage
+      - "./graphite/conf/carbon.conf:/opt/graphite/conf/carbon.conf:ro"
+      - "./graphite/conf/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf:ro"
 
   grafana:
-    build: ./grafana
+    image: grafana/grafana
     ports:
-      - "3090:3000"
+      - "3000:3000"
     volumes:
       - grafana:/var/lib/grafana
+      - "./grafana/conf/datasource.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro"
     depends_on:
       - graphite
     environment:
@@ -27,7 +29,7 @@ services:
       GRAFANA_PASS: admin
 
 volumes:
-  data:
+  graphite-data:
     driver: local
   grafana:
     driver: local

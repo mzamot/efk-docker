@@ -8,9 +8,9 @@ services:
       - "RABBITMQ_DEFAULT_PASS=sensu"
       - "RABBITMQ_DEFAULT_VHOST=/sensu"
     ports:
-      - 5673:5672
+      - 5672:5672
     expose:
-      - 5673
+      - 5672
     restart: always
 
   redis:
@@ -30,6 +30,9 @@ services:
     links:
       - rabbitmq
       - redis
+    volumes:
+      - ./openstack/sensu-checks.json:/etc/sensu/conf.d/sensu-checks.json:ro
+      - ./openstack/sensu-haproxy-check.json:/etc/sensu/conf.d/sensu-haproxy-check.json:ro
     restart: always
 
   sensu-api:
@@ -44,9 +47,9 @@ services:
   uchiwa:
     image: uchiwa/uchiwa
     ports:
-      - "3080:3000"
+      - "3000:3000"
     volumes:
-      - "./sensu/uchiwa.json:/config/config.json:ro"
+      - "./uchiwa/uchiwa.json:/config/config.json:ro"
     depends_on:
       - sensu-server
       - sensu-api
