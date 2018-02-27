@@ -24,9 +24,6 @@ services:
     links:
       - rabbitmq
       - redis
-    volumes:
-      - ./openstack/sensu-checks.json:/etc/sensu/conf.d/sensu-checks.json:ro
-      - ./openstack/sensu-haproxy-check.json:/etc/sensu/conf.d/sensu-haproxy-check.json:ro
     restart: always
 
   sensu-api:
@@ -39,7 +36,7 @@ services:
   uchiwa:
     image: uchiwa/uchiwa
     ports:
-      - "3000:3000"
+      - "3060:3000"
     volumes:
       - "./uchiwa/uchiwa.json:/config/config.json:ro"
     depends_on:
